@@ -76,7 +76,7 @@ app.get("/swap", async (req, res) => {
 
   const config = {
     headers: {
-      Authorization: `Bearer iFPdHWv7WJIqdsJNphq0RNnmrMoxCGZX`,
+      Authorization: `Bearer ${process.env.API_KEY}`,
     },
     params: {
       chain: chain,
