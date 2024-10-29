@@ -57,8 +57,6 @@ app.get("/quote", async (req, res) => {
   try {
     const response = await axios.get(url, config);
 
-    console.log("response", response);
-
     res.json(response.data);
   } catch (error) {
     console.log("error", error);
@@ -129,6 +127,34 @@ app.get("/approve", async (req, res) => {
     const response = await axios.get(url, config);
 
     res.json(response.data);
+  } catch (error) {
+    res.status(500).send("Error in the API request");
+  }
+});
+
+app.get("/price", async (req, res) => {
+  const { symbol } = req.query;
+
+  console.log("symbol", symbol);
+
+  try {
+    const { data } = await axios.get(
+      "https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest",
+      {
+        headers: {
+          "X-CMC_PRO_API_KEY": process.env.COINMARKETCAP_API_KEY,
+        },
+        params: {
+          symbol: symbol,
+          skip_invalid: true,
+          convert: "USD",
+        },
+      }
+    );
+
+    console.log("data", data);
+
+    res.json(data.data);
   } catch (error) {
     res.status(500).send("Error in the API request");
   }
